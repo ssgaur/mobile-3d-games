@@ -1,97 +1,289 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+Perfect 👏 — since you want this to work **from clone → install → run** on both **iOS (simulator + iPhone)** and **Android (emulator + physical OnePlus)** on **Mac**, here’s a complete **production-grade `README.md`** you can drop directly into your repo
+👉 [`https://github.com/ssgaur/mobile-3d-games`](https://github.com/ssgaur/mobile-3d-games)
 
-# Getting Started
+It assumes only:
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+* You have **macOS**, **internet**, and **Git** installed.
+* No prior setup (it installs Node, Watchman, Xcode, Android SDK, CocoaPods, etc.)
+* Works for both simulator and connected mobile devices.
 
-## Step 1: Start Metro
+---
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+````markdown
+# 🚀 Mobile 3D Games — React Native Setup Guide
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+This repository contains the **Mobile 3D Games App**, built using **React Native** with full cross-platform support for **iOS** and **Android**.
 
-```sh
-# Using npm
+This guide will take you from a **fresh Mac setup** to running the app on both:
+- 🧭 iOS Simulator / iPhone (via Xcode)
+- 🤖 Android Emulator / OnePlus device (via Android Studio)
+
+---
+
+## 🧱 1. System Requirements
+
+✅ macOS (Ventura or newer)  
+✅ Stable internet connection  
+✅ Git installed (`git --version`)  
+✅ 25GB free disk space  
+
+---
+
+## ⚙️ 2. Install Global Dependencies
+
+Open Terminal and run the following commands step-by-step:
+
+### 📦 Install Homebrew
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+````
+
+### 🧠 Install Node, Watchman, and Java
+
+```bash
+brew install node watchman openjdk@17
+```
+
+> React Native requires Node ≥ 18 and Java 17 for Gradle compatibility.
+
+Add Java to your path:
+
+```bash
+echo 'export JAVA_HOME=$(/usr/libexec/java_home -v17)' >> ~/.zshrc
+source ~/.zshrc
+```
+
+### 🛠️ Install Yarn (optional but faster)
+
+```bash
+npm install -g yarn
+```
+
+---
+
+## 🍎 3. iOS Setup (Simulator & iPhone)
+
+### Install Xcode
+
+* Download from the **Mac App Store**.
+* After installation:
+
+  ```bash
+  sudo xcode-select --switch /Applications/Xcode.app
+  sudo xcodebuild -license accept
+  ```
+
+### Install CocoaPods (dependency manager for iOS)
+
+```bash
+sudo gem install cocoapods
+```
+
+---
+
+## 🤖 4. Android Setup (Emulator & Physical Device)
+
+### Install Android Studio
+
+1. Download from [https://developer.android.com/studio](https://developer.android.com/studio)
+2. During installation, **check all boxes**:
+
+   * Android SDK
+   * Android SDK Platform Tools
+   * Android Virtual Device
+3. Once installed:
+
+   * Open **Android Studio → Preferences → Appearance & Behavior → System Settings → Android SDK**
+   * Install the latest **SDK Platform (Android 14 / API 34)**.
+
+### Add Android tools to PATH
+
+```bash
+echo 'export ANDROID_HOME=$HOME/Library/Android/sdk' >> ~/.zshrc
+echo 'export PATH=$PATH:$ANDROID_HOME/emulator' >> ~/.zshrc
+echo 'export PATH=$PATH:$ANDROID_HOME/platform-tools' >> ~/.zshrc
+source ~/.zshrc
+```
+
+Verify:
+
+```bash
+adb devices
+```
+
+> If it lists your OnePlus or emulator — ✅ ready.
+
+---
+
+## 🧩 5. Clone and Install Project
+
+```bash
+git clone https://github.com/ssgaur/mobile-3d-games.git
+cd mobile-3d-games
+```
+
+Install dependencies:
+
+```bash
+npm install
+# OR
+yarn install
+```
+
+---
+
+## 🧵 6. iOS Setup (Pods & Run)
+
+```bash
+cd ios
+pod install
+cd ..
+```
+
+### Run on Simulator
+
+```bash
+npx react-native run-ios
+```
+
+### Run on Connected iPhone
+
+1. Connect your iPhone via USB.
+2. Open the Xcode workspace:
+
+   ```bash
+   open ios/mobile3dgames.xcworkspace
+   ```
+3. Select your device (top toolbar) → click **Run ▶️**.
+4. If prompted, sign the app with your Apple ID (Xcode → Signing & Capabilities).
+
+---
+
+## ⚡ 7. Android Setup (Emulator & Device)
+
+### Create an Emulator
+
+1. Open **Android Studio → Device Manager**
+2. Click **Create Device → Pixel 8 → Android 14 (API 34) → Finish**
+3. Launch the emulator.
+
+OR launch manually:
+
+```bash
+emulator -list-avds
+emulator -avd Pixel_8_API_34
+```
+
+### Run on Emulator
+
+```bash
+npx react-native run-android
+```
+
+### Run on Connected Android (e.g. OnePlus)
+
+1. Enable **Developer Options** → **USB Debugging** on your phone.
+   (Settings → About phone → tap Build Number 7 times)
+2. Connect via USB.
+3. Verify:
+
+   ```bash
+   adb devices
+   ```
+
+   You should see your phone listed.
+4. Run:
+
+   ```bash
+   npx react-native run-android
+   ```
+
+---
+
+## 🧰 8. Common Commands
+
+| Task                 | Command                                  |
+| -------------------- | ---------------------------------------- |
+| Start Metro bundler  | `npm start`                              |
+| Run on iOS           | `npx react-native run-ios`               |
+| Run on Android       | `npx react-native run-android`           |
+| Clean Android build  | `cd android && ./gradlew clean && cd ..` |
+| List Android devices | `adb devices`                            |
+| Open iOS simulator   | `open -a Simulator`                      |
+
+---
+
+## 🧠 9. Troubleshooting
+
+| Problem                        | Fix                                                |
+| ------------------------------ | -------------------------------------------------- |
+| **CocoaPods not found**        | `sudo gem install cocoapods`                       |
+| **“adb: command not found”**   | Add Android SDK to PATH                            |
+| **Gradle JvmVendorSpec error** | Ensure Java 17 (`brew install openjdk@17`)         |
+| **Metro stuck or error**       | `npx react-native start --reset-cache`             |
+| **Pods outdated**              | `cd ios && pod repo update && pod install`         |
+| **App not appearing on phone** | Re-run `adb devices`, ensure USB Debugging enabled |
+
+---
+
+## 🧩 10. Verify Setup (Optional Doctor Check)
+
+```bash
+npx react-native doctor
+```
+
+✅ This will scan and auto-fix most setup issues.
+
+---
+
+## 🎮 11. You’re Done!
+
+Now you can:
+
+```bash
 npm start
-
-# OR using Yarn
+# or
 yarn start
 ```
 
-## Step 2: Build and run your app
+Then in separate terminals:
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
+```bash
 npm run ios
-
-# OR using Yarn
-yarn ios
+# or
+npm run android
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+Your app will launch on:
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+* iPhone simulator or device (via Xcode)
+* Android emulator or OnePlus (via adb)
 
-## Step 3: Modify your app
+---
 
-Now that you have successfully run the app, let's make changes!
+## 💡 Notes
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+* For best performance, use **Node 20 LTS** and **React Native ≥ 0.82**.
+* You can debug directly using **React Developer Tools** or **Flipper**.
+* Hot Reloading is enabled by default — your app updates instantly on save.
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+---
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+### 🧑‍💻 Author
 
-## Congratulations! :tada:
+Maintained by [Shailendra Singh (ssgaur)](https://github.com/ssgaur)
 
-You've successfully run and modified your React Native App. :partying_face:
+---
 
-### Now what?
+### 🏁 Summary
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+From zero to running app:
 
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+```bash
+git clone https://github.com/ssgaur/mobile-3d-games.git
+cd mobile-3d-games
+npm install
+cd ios && pod install && cd ..
+npx react-native run-ios
+npx react-native run-android
+```
